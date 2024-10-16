@@ -6,7 +6,7 @@ A standalone C program demonstrating use of the FatFs module library to write an
 
 ## Run requirements
 
-- You will need an SD card containing a FAT/exFAT partition
+- You will need a SD card containing a FAT/exFAT partition
 - If the SD card is bootable, don't insert it just yet, apply power to the DE10-Nano, start the debugging in Eclipse (which runs U-Boot SPL with SD/MMC controller disabled), then insert the card
 
 ## Build requirements
@@ -32,7 +32,7 @@ You can find the guide on my website:
 
 ## Limitations
 
-- I did not override the portable get_fattime() function because the Cyclone V SoCFPGA does not have an RTC, instead we can use the default function with a constant date.  To do we edit the FatFs ffconf.h file with the parameter: FF_FS_NORTC = 1 and a constant date
+- I did not override the portable get_fattime() function because the Cyclone V SoCFPGA does not have an RTC, instead we can use the default function with a constant date.  To do this we edit the FatFs ffconf.h file with the parameter: FF_FS_NORTC = 1 and a constant date
 - Only the char type string is supported;	it is very difficult to support wchar_t string, UNICODE string, etc.
 
 ## Libraries used in the source code
