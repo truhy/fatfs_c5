@@ -9,11 +9,11 @@ SCRIPT_PATH="$(dirname "$SCRIPT_PATH")"
 TOOLCHAIN_PATH=~/devtools/xpack-arm-none-eabi-gcc-13.2.1-1.1/bin
 OPENOCD_PATH=~/devtools/xpack-openocd-0.12.0-2/bin
 
-# Bare-metal settings
-export BM_OUT_PATH=$SCRIPT_PATH
-export BM_HOME_PATH=$SCRIPT_PATH
-export BM_SRC_PATH1=source
-export BM_PROGRAM_NAME1=fatfs_c5
+# Application settings
+export APP_HOME_PATH=$SCRIPT_PATH
+export APP_OUT_PATH=$SCRIPT_PATH
+export APP_SRC_PATH1=source
+export APP_PROGRAM_NAME1=fatfs_c5
 
 # U-Boot settings
 export UBOOT_OUT_PATH=$SCRIPT_PATH
@@ -54,7 +54,7 @@ export CROSS_COMPILE=arm-none-eabi-
 
 # SD card image settings
 export SD_OUT_PATH=$SCRIPT_PATH
-export SD_PROGRAM_NAME=$BM_PROGRAM_NAME1
+export SD_PROGRAM_NAME=$APP_PROGRAM_NAME1
 
 # Search path settings
 export PATH=$PATH:$SCRIPT_PATH/scripts-env:$SCRIPT_PATH/scripts-linux

@@ -9,7 +9,7 @@ all: release
 release: rel_read_elf_info rel_extract_load_offset rel_extract_load_virtaddr rel_extract_load_physaddr rel_extract_entry_addr
 
 rel_read_elf_info:
-	$(eval REL_ELF_INFO := $(shell arm-none-eabi-readelf -l $(BM_HOME_PATH)/Release/helloworld.elf))
+	$(eval REL_ELF_INFO := $(shell arm-none-eabi-readelf -l $(APP_OUT_PATH)/Release/$(APP_PROGRAM_NAME1).elf))
 	$(info ELF info: $(REL_ELF_INFO))
 
 # Extracts the load offset
@@ -55,7 +55,7 @@ rel_extract_entry_addr:
 debug: dbg_read_elf_info dbg_extract_load_offset dbg_extract_load_virtaddr dbg_extract_load_physaddr dbg_extract_entry_addr
 
 dbg_read_elf_info:
-	$(eval DBG_ELF_INFO := $(shell arm-none-eabi-readelf -l $(BM_HOME_PATH)/Debug/helloworld.elf))
+	$(eval DBG_ELF_INFO := $(shell arm-none-eabi-readelf -l $(APP_OUT_PATH)/Debug/$(APP_PROGRAM_NAME1).elf))
 	$(info ELF info: $(DBG_ELF_INFO))
 
 # Extracts the load offset

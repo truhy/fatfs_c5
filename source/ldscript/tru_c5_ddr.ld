@@ -1,24 +1,20 @@
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
-ENTRY(reset_handler)
+
+ENTRY(Reset_Handler)
 
 /* __RAM_BASE       = 0x0; */           /* For making a program that starts from beginning of DDR-3 SDRAM with lower 1MB address remapped */
 __RAM_BASE       = 0x1000;              /* For making a program that can be loaded in the U-Boot console and run with go command. Note: U-Boot console has some reserved memories that perhaps cannot be used, e.g. 0x0-0xfff (see with bdinfo command) */
 __RAM_SIZE       = 1024M - __RAM_BASE;  /* DDR3 SDRAM size of this app */
-
-/* Ensure these stack sizes are aligned to 8 bytes */
 __FIQ_STACK_SIZE = 4096;
 __IRQ_STACK_SIZE = 4096;
 __SVC_STACK_SIZE = 4096;
 __ABT_STACK_SIZE = 4096;
 __UND_STACK_SIZE = 4096;
-__SYS_STACK_SIZE = 8192;  /* This is also for the user mode, because they use the same stack pointer */
+__SYS_STACK_SIZE = 16384;  /* This is also for the user mode, because they use the same stack pointer */
 
 MEMORY {
     __RAM (rwx) : ORIGIN = __RAM_BASE, LENGTH = __RAM_SIZE
-    
-    /* For making your own first stage preloader, e.g. Altera's MPL (Minimal PreLoader) example. */
-    /* __RAM (rwx) : ORIGIN = 0xFFFF0000, LENGTH = 64K */
 }
 
 /* A solution to the linker warning of first load segment having rwx is to manually create the program headers with the correct segment flags */
@@ -34,16 +30,17 @@ PHDRS {
 
 SECTIONS {
     .vectors : {
-        __vectors = .;
+        Image$$VECTORS$$Base = .;   /* Used by CMSIS */
         
-        *(.vectors)
+        *(RESET)                    /* Used by CMSIS and my startup for vector table */
+        *(.vectors)                 /* Used by HWLib */
         
-        __evectors = .;
+        Image$$VECTORS$$Limit = .;  /* Used by CMSIS */
     } > __RAM : __LOAD_RX
 
     .text : {
         . = ALIGN(4);
-        __text = .;
+        __text_start = .;  /* User defined symbol */
         
         *(.text)
         *(.text.*)
@@ -53,12 +50,11 @@ SECTIONS {
         *(.glue_7t)
         *(.glue_7)
         *(.gcc_except_table)
-        
         KEEP(*(.init))
         KEEP(*(.fini))
         
         . = ALIGN(4);
-        __etext = .;
+        __text_end = .;  /* User defined symbol */
     } > __RAM : __LOAD_RX
 
     .rodata : {
@@ -67,12 +63,21 @@ SECTIONS {
         *(.rodata*)    /* .rodata* sections (constants, strings, etc.) */
         . = ALIGN(4);
     } > __RAM : __LOAD_RX
-    
-    /* MMU L1 and L2 translation table */
-    .mmu_ttb (ALIGN(16384)) : {
-        __TTB_BASE = .;
-        *(MMU_TTB)
-        __TTB_LIMIT = .;
+
+    /* MMU L1 translation table block */
+    .mmu_ttb_l1 : {
+				. = ALIGN(16384);
+        __mmu_ttb_l1_entries_start = .;
+				*(mmu_ttb_l1_entries)
+        __mmu_ttb_l1_entries_end = .;
+    } > __RAM : __LOAD_RX
+		
+		/* MMU L2 translation table block */
+    .mmu_ttb_l2 : {
+				. = ALIGN(16384);
+				__mmu_ttb_l2_entries_start = .;
+        *(mmu_ttb_l2_entries)
+        __mmu_ttb_l2_entries_end = .;
     } > __RAM : __LOAD_RX
 
     .ARM.extab : {
@@ -164,6 +169,7 @@ SECTIONS {
 
     .bss (NOLOAD) : {
         . = ALIGN(4);
+        Image$$ZI_DATA$$Base = .;
         __bss_start = .;
         __bss_start__ = .;
         
@@ -173,6 +179,7 @@ SECTIONS {
         *(COMMON)
         
         . = ALIGN(4);
+        Image$$ZI_DATA$$Limit = .;
         _bss_end__ = .;
         __bss_end__ = .;
         
@@ -184,48 +191,59 @@ SECTIONS {
 
     .heap (NOLOAD) : {
         . = ALIGN(4);
+        Image$$HEAP$$ZI$$Base = .;
         __heap_start = .;  /* User defined symbol */
         
         *(.heap*)
         . = ORIGIN(__RAM) + LENGTH(__RAM) - . - __FIQ_STACK_SIZE - __IRQ_STACK_SIZE - __SVC_STACK_SIZE - __ABT_STACK_SIZE - __UND_STACK_SIZE - __SYS_STACK_SIZE;  /* Calculate maximum heap size to move stack all the way to the end of RAM */
         
-        . = ALIGN(4);
+        Image$$HEAP$$ZI$$Limit = .;
         __heap_end = .;    /* User defined symbol */
         __heap_limit = .;  /* Used by newlib */
     } > __RAM : __LOAD_RW
 
     .stack (NOLOAD) : {
         . = ALIGN(8);
-
+        
+        Image$$FIQ_STACK$$ZI$$Base = .;
         __FIQ_STACK_BASE = .;
         . += __FIQ_STACK_SIZE;
         __FIQ_STACK_LIMIT = .;
-		
-		__IRQ_STACK_BASE = .;
+        Image$$FIQ_STACK$$ZI$$Limit = .;
+        
+        Image$$IRQ_STACK$$ZI$$Base = .;
+        __IRQ_STACK_BASE = .;
         . += __IRQ_STACK_SIZE;
         __IRQ_STACK_LIMIT = .;
-		
-		__SVC_STACK_BASE = .;
+        Image$$IRQ_STACK$$ZI$$Limit = .;
+        
+        Image$$SVC_STACK$$ZI$$Base = .;
+        __SVC_STACK_BASE = .;
         . += __SVC_STACK_SIZE;
         __SVC_STACK_LIMIT = .;
-		
-		__ABT_STACK_BASE = .;
+        Image$$SVC_STACK$$ZI$$Limit = .;
+        
+        Image$$ABT_STACK$$ZI$$Base = .;
+        __ABT_STACK_BASE = .;
         . += __ABT_STACK_SIZE;
         __ABT_STACK_LIMIT = .;
-		
-		__UND_STACK_BASE = .;
+        Image$$ABT_STACK$$ZI$$Limit = .;
+        
+        Image$$UND_STACK$$ZI$$Base = .;
+        __UND_STACK_BASE = .;
         . += __UND_STACK_SIZE;
         __UND_STACK_LIMIT = .;
+        Image$$UND_STACK$$ZI$$Limit = .;
         
-		__SYS_STACK_BASE = .;
+        Image$$SYS_STACK$$ZI$$Base = .;
+        __SYS_STACK_BASE = .;
         . += __SYS_STACK_SIZE;
         __SYS_STACK_LIMIT = .;
-
-        __stack = .;  /* Used by newlib */
+        Image$$SYS_STACK$$ZI$$Limit = .;
         
-        . = ALIGN(8);
+        __stack = .;     /* Used by newlib */
     } > __RAM : __LOAD_RW
-
+        
     .ARM.attributes 0 : { KEEP(*(.ARM.attributes)) }
     /DISCARD/ : { *(.note.GNU-stack) }
 }
