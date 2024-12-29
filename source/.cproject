@@ -105,7 +105,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="hps_isw_handoff|hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -209,7 +209,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="hps_isw_handoff|hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -318,7 +318,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="hps_isw_handoff|hwlib/src/utils/alt_p2uart.c|hwlib/src/utils/alt_printf.c|hwlib/src/hwmgr/alt_ethernet.c|hwlib/src/hwmgr/soc_a10|hwlib/src/hwmgr/alt_eth_phy_ksz9031.c|hwlib/src/utils/alt_base.c|hwlib/src/utils/alt_base.S" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
