@@ -21,10 +21,10 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 
-	Version: 20241006
+	Version: 20250405
 	Target : ARM Cortex-A9 on the DE10-Nano development board (Intel Cyclone V SoC
 	         FPGA)
-	Type   : C
+	Type   : Standalone C
 
 	A standalone C program demonstrating use of the FatFs module library to write
 	and read a plain text file with a SD card containing a FAT/exFAT filesystem.
@@ -98,8 +98,7 @@ void disp_dir(const TCHAR *path){
 			FILINFO finfo;
 
 			// Read info of all files (non-recursive) inside the directory
-			if(f_readdir(&fdir, &finfo) != FR_OK) break;
-			if(finfo.fname[0] == 0) break;
+			if(f_readdir(&fdir, &finfo) != FR_OK || finfo.fname[0] == 0) break;
 
 			printf("%.10lu %04u-%02u-%02u %02u:%02u:%02u %c%c%c%c%c %s\n",
 				finfo.fsize,
@@ -198,11 +197,11 @@ void run_demo(void){
 }
 
 int main(int argc, char *const argv[]){
-	#ifdef SEMIHOSTING
-		initialise_monitor_handles();  // Initialise Semihosting
-	#endif
+#ifdef SEMIHOSTING
+	initialise_monitor_handles();  // Initialise Semihosting
+#endif
 
-		run_demo();
+	run_demo();
 
 #if(TRU_EXIT_TO_UBOOT == 1U)
 	tru_hps_uart_ll_wait_empty((TRU_TARGET_TYPE *)TRU_HPS_UART0_BASE);  // Before returning to U-Boot, we will wait for the UART to empty out
