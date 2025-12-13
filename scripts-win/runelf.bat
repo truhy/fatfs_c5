@@ -21,7 +21,7 @@
 ::@SET user_entry=0x00100040
 
 :: Reset SoC HPS, load and execute U-Boot SPL elf
-openocd -f interface/altera-usb-blaster2.cfg -f target/altera_fpgasoc_de.cfg -c "init; halt; c5_reset; halt; c5_spl %ubootspl%; sleep 200; halt; arm core_state arm; load_image %app1_elf%; resume %user_entry%; shutdown"
+openocd -f interface/altera-usb-blaster2.cfg -f target/altera_fpgasoc_de.cfg -c "init; reset init; c5_spl %ubootspl%; sleep 200; halt; arm core_state arm; load_image %app1_elf%; resume %user_entry%; shutdown"
 @IF %errorlevel% NEQ 0 GOTO :err_handler
 
 @GOTO :end_of_script

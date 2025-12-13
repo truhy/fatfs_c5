@@ -21,13 +21,16 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 
-	Version: 20250405
-	Target : ARM Cortex-A9 on the DE10-Nano development board (Intel Cyclone V SoC
-	         FPGA)
-	Type   : Standalone C
+	Version: 20251209
+	Target : ARM Cortex-A9 on the DE10-Nano Kit development board (Altera
+	         Cyclone V SoC FPGA)
+	Type   : Stand-alone C application
 
-	A standalone C program demonstrating use of the FatFs module library to write
-	and read a plain text file with a SD card containing a FAT/exFAT filesystem.
+	A program demonstrating the FatFs module library accessing the FAT/exFAT
+	filesystem on SD card.
+
+	First it writes a string to a plain text file and then reads back from the
+	same file.
 	
 	Intel HWLIB is used for the low-level SD/MMC card controller functions.
 */
@@ -35,7 +38,7 @@
 #include "tru_config.h"
 #include "tru_logger.h"
 #include "alt_sdmmc.h"
-#include "diskio_c5_sdmmc.h"
+#include "diskio_c5soc_sdmmc.h"
 #include "diskio.h"
 #include <stdio.h>
 #include <string.h>
@@ -204,7 +207,7 @@ int main(int argc, char *const argv[]){
 	run_demo();
 
 #if(TRU_EXIT_TO_UBOOT == 1U)
-	tru_hps_uart_ll_wait_empty((TRU_TARGET_TYPE *)TRU_HPS_UART0_BASE);  // Before returning to U-Boot, we will wait for the UART to empty out
+	tru_hps_uart_ll_wait_empty((void *)TRU_HPS_UART0_BASE);  // Before returning to U-Boot, we will wait for the UART to empty out
 #endif
 
 	return 0xa9;
