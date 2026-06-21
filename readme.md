@@ -2,7 +2,7 @@
 
 ## Overview
 
-A standalone C program demonstrating use of the FatFs module library to write and read a plain text file with a SD card containing a FAT/exFAT filesystem.
+A standalone C program demonstrating use of the FatFs module library to write and read a plain text file on a micro SD card containing a FAT/exFAT filesystem.
 
 ## Run requirements
 
