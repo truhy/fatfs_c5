@@ -55,7 +55,14 @@ endif
 # ============
 
 # List of source folders and files to exclude from the build
-EXCLUDE_SRCS :=
+EXCLUDE_SRCS := \
+	$(APP_SRC_PATH1)/hwlib/src/hwmgr/soc_a10 \
+	$(APP_SRC_PATH1)/hwlib/src/hwmgr/alt_eth_phy_ksz9031.c \
+	$(APP_SRC_PATH1)/hwlib/src/hwmgr/alt_ethernet.c \
+	$(APP_SRC_PATH1)/hwlib/src/utils/alt_base.S \
+	$(APP_SRC_PATH1)/hwlib/src/utils/alt_base.c \
+	$(APP_SRC_PATH1)/hwlib/src/utils/alt_p2uart.c \
+	$(APP_SRC_PATH1)/hwlib/src/utils/alt_printf.c
 
 # Get and build a list of source file names from the file system with these locations and pattern
 SRCS := \
@@ -102,7 +109,7 @@ CFLAGS := -mcpu=cortex-a9 -marm -mfloat-abi=hard -mfpu=neon -mno-unaligned-acces
 LDFLAGS := -Xlinker --gc-sections --specs=nosys.specs
 
 # Compiler user symbols (defines)
-CFLAGS_SYMBOL_COMMON := -D_RTE_
+CFLAGS_SYMBOL_COMMON := -D_RTE_ -Dsoc_cv_av -DCYCLONEV
 CFLAGS_SYMBOL_DEBUG_SEMI := -DSEMIHOSTING
 CFLAGS_SYMBOL_ETU := -DTRU_EXIT_TO_UBOOT=1
 

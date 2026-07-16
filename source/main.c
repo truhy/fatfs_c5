@@ -21,7 +21,7 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 
-	Version: 20251209
+	Version: 20260707
 	Target : ARM Cortex-A9 on the DE10-Nano Kit development board (Altera
 	         Cyclone V SoC FPGA)
 	Type   : Stand-alone C application
@@ -42,10 +42,6 @@
 #include "diskio.h"
 #include <stdio.h>
 #include <string.h>
-
-#ifdef SEMIHOSTING
-	extern void initialise_monitor_handles(void);  // Reference function header from the external Semihosting library
-#endif
 
 const TCHAR drvno[] = _T("0");  // Logical drive number
 const TCHAR rootpath[] = _T("");  // Root directory
@@ -200,14 +196,11 @@ void run_demo(void){
 }
 
 int main(int argc, char *const argv[]){
-#ifdef SEMIHOSTING
-	initialise_monitor_handles();  // Initialise Semihosting
-#endif
-
+	tru_bsp_init();
 	run_demo();
 
 #if(TRU_EXIT_TO_UBOOT == 1U)
-	tru_hps_uart_ll_wait_empty((void *)TRU_HPS_UART0_BASE);  // Before returning to U-Boot, we will wait for the UART to empty out
+	tru_hps_uart_wait_empty(TRU_SYSCALL_IO_UART_BASE);  // Before returning to U-Boot, we will wait for the UART to empty out
 #endif
 
 	return 0xa9;
